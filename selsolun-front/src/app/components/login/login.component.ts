@@ -3,7 +3,7 @@ import {FormsModule, NgForm} from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 
 import { LoginData } from '../../models/login-data.interface';
-import { AuthService } from '../../services/authentication/auth.service';
+import { AuthService } from '../../services/auth.service';
 import {Router} from '@angular/router';
 
 @Component({

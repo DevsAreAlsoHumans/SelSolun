@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 
 import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-import { RegisterData } from '../../models/register-data.interface';
-import { LoginData } from '../../models/login-data.interface';
+import { environment } from '../../environments/environment';
+import { RegisterData } from '../models/register-data.interface';
+import { LoginData } from '../models/login-data.interface';
 
 @Injectable({
   providedIn: 'root'
