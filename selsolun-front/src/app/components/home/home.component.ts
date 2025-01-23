@@ -10,7 +10,21 @@ import {MarketChartData} from '../../models/market-chart.data';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  prices: { name: string; timestamp: number; price: number }[] = [];
+  prices: {
+    name: string;
+    timestamp: number;
+    price: number;
+    logo: string
+  }[] = [];
+
+  cryptoLogos: { [key: string]: string } = {
+    'Bitcoin': 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+    'Ethereum': 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+    'Tether': 'https://assets.coingecko.com/coins/images/325/large/tether.png',
+    'Doge': 'https://assets.coingecko.com/coins/images/5/large/dogecoin.png',
+    'Shiba': 'https://assets.coingecko.com/coins/images/11939/large/shiba.png'
+  };
+
   sortColumn: string = 'price';
   sortDirection: 'asc' | 'desc' = 'desc';
 
@@ -39,7 +53,9 @@ export class HomeComponent implements OnInit {
             this.prices.push({
               name: cryptoData.name,
               timestamp: firstPrice[0],
-              price: firstPrice[1]
+              price: firstPrice[1],
+
+              logo: this.cryptoLogos[cryptoData.name] || 'default-logo-url'
             });
           } else {
             console.warn(`No prices available for ${cryptoData.name}`);
