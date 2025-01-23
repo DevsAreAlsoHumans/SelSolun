@@ -70,11 +70,15 @@ public class JwtService implements IJwtService {
     private Claims extractAllClaims(
             String token
     ) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException e) {
+            throw new RuntimeException("Token invalide ou expiré");
+        }
     }
 
     @Override
