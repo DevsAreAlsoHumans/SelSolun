@@ -9,5 +9,5 @@ import fr.doranco.solsolunback.dto.market.MarketDataResponse;
 public interface ICryptocurrencyService {
     CryptoResponse saveOrUpdateCryptocurrency(CryptoRequest request);
 
-    MarketDataResponse getMarketChart(MarketDataRequest request);
+    Object getMarketChart(MarketDataRequest request);
 }
