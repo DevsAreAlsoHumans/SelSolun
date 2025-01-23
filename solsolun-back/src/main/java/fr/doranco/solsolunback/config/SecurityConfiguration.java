@@ -51,7 +51,7 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-    @Value("#{'${app.security.allowed-origins:}'.split(',')}")
+    /*@Value("#{'${app.security.allowed-origins:}'.split(',')}")
     private List<String> allowedOrigins;
 
     @Bean
@@ -75,5 +75,5 @@ public class SecurityConfiguration {
 
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
+    }*/
 }
