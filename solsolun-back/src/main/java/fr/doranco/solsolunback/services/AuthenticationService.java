@@ -45,8 +45,10 @@ public class AuthenticationService implements IAuthenticationService {
                 .username(request.username())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.passwordHash()))
-                .balance(1000000000.0)
+                .balance(1000000000.59)
                 .build();
+
+        System.out.println(user.getBalance());
 
         this.userRepository.save(user);
 
