@@ -43,7 +43,9 @@ public class TransactionService implements ITransactionService {
 
         final double totalCost = request.amount() * cryptocurrency.getCurrentPrice();
 
-        // TODO Ajouter un controle de la balance du user et ajouter le champs balance dans l'entity
+        user.setBalance(user.getBalance() - totalCost);
+        this.userRepository.save(user);
+
 
         final Portfolio portfolio = portfolioRepository.findByUserAndCryptocurrency(user, cryptocurrency)
                 .map(existingPortfolio -> {
