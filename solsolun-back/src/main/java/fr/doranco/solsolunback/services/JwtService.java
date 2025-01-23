@@ -88,7 +88,7 @@ public class JwtService implements IJwtService {
         final Map<String, Object> claims = new HashMap<>();
         final User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec email : " + userDetails.getUsername()));
-        claims.put("balance", user.getBalance());
+        claims.put("balance", user.getBalance() != null ? user.getBalance() : 0.0);
 
         return generateToken(claims, userDetails);
     }
