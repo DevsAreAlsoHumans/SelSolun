@@ -49,9 +49,7 @@ export class AuthService {
       }
     ).pipe(
       catchError((error) => {
-        console.error('Erreur lors de la connexion :', error);
-        const errorMessage = error.error?.error_message || 'Une erreur inattendue s’est produite.';
-        return throwError(() => new Error(errorMessage));
+        return throwError(() => new Error(error.error?.error_message || 'Une erreur inattendue s’est produite.'));
       })
     );
   }
