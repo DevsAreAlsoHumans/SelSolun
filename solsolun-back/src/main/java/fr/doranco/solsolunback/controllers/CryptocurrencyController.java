@@ -26,7 +26,7 @@ public class CryptocurrencyController {
                 .body(this.cryptocurrencyService.saveOrUpdateCryptocurrency(request));
     }
 
-    @GetMapping("/market-chart")
+    @PostMapping("/market-chart")
     public ResponseEntity<Object> getMarketChart(
             @RequestBody MarketDataRequest request
     ) {

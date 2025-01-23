@@ -1,35 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import {MarketChartData} from '../../models/market-chart.data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CryptocurrencyService {
-  private apiUrl = 'http://localhost:8080/api/cryptocurrencies/market-chart';
-  private api_url: string = environment.api_url + 'api/cryptocurrencies/market-chart';
-
+  private apiUrl = 'http://localhost:8080/api/cryptocurrencies/market-chart'; // Update with the actual URL
 
   constructor(private http: HttpClient) {}
 
-  getMarketChart(data: { name: string; currency: string; day: number }): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    console.log(token);
-    // Retrieve token from localStorage
+  getMarketChart(data: MarketChartData): Observable<any> {
+    const token = localStorage.getItem('authToken'); // Retrieve auth token
 
-    // If token exists, set it in the Authorization header
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    console.log(headers);
-    console.log(data);
-
-    return this.http.post(this.api_url, data, { headers }).pipe(
+    return this.http.post(
+      this.apiUrl,
+      data,
+      {
+        headers,
+        observe: 'response'
+      }
+    ).pipe(
       catchError((error) => {
-        console.error('Erreur lors de la recuperation crypto :', error);
-        const errorMessage = error.error?.error_message || 'Une erreur inattendue s’est produite.';
+        console.error('Error fetching market chart:', error);
+        const errorMessage = error.error?.error_message || 'An unexpected error occurred.';
         return throwError(() => new Error(errorMessage));
       })
     );

@@ -36,6 +36,7 @@ public class SecurityConfiguration {
     public DefaultSecurityFilterChain defaultSecurityFilterChain(
             HttpSecurity http
     ) throws Exception {
+        System.out.println("Security Configuration");
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -55,6 +56,8 @@ public class SecurityConfiguration {
 
     @Bean
     CorsConfigurationSource createCorsConfigSource() {
+        System.out.println(allowedOrigins);
+
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:4200");

@@ -1,15 +1,17 @@
 <div>
-  <h1>Bitcoin Prices</h1>
+  <h1>Cryptocurrency Prices</h1>
   <table>
     <thead>
     <tr>
+      <th>Cryptocurrency</th>
       <th>Timestamp</th>
       <th>Price (USD)</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let price of prices">
-      <td>{{ price.timestamp }}</td>
+      <td>{{ price.name }}</td>
+      <td>{{ price.timestamp | date: 'short' }}</td>
       <td>{{ price.price | number: '1.2-2' }}</td>
     </tr>
     </tbody>

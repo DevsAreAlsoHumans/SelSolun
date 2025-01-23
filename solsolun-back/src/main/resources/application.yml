@@ -27,3 +27,7 @@ application:
     jwt:
       secret-key: ${JWT_KEY:MFqyJ6N56N3OtSwplTcfI/nxne0NVcyNAZ2F9dru+EI=}
       expiration: ${JWT_EXPIRATION:86400000}
+
+app:
+  security:
+    allowed-origins: http://localhost:4200
