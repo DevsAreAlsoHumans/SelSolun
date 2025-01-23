@@ -101,6 +101,11 @@ export class HomeComponent implements OnInit {
       return;
     }
 
+    const formattedName = name.toLowerCase().replace(/\s+/g, '-');
+    const logoUrl = `https://assets.coingecko.com/coins/images/large/${formattedName}.png`;
+
+    this.cryptoLogos[name] = logoUrl; // Add the new logo to the dictionary
+
     this.fetchCryptoData(name, 'usd', 1);
     this.searchCrypto = ''; // Clear the input field
   }

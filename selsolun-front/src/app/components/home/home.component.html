@@ -1,16 +1,18 @@
 <div class="container mt-4">
-  <div class="mb-3 d-flex justify-content-between align-items-center">
+  <div class="mb-3 d-flex justify-content-start align-items-center" style="max-width: 400px;">
     <input
       type="text"
       class="form-control me-2"
       placeholder="Enter cryptocurrency name (e.g., Bitcoin)"
+      style="height: 32px; font-size: 0.875rem;"
       [(ngModel)]="searchCrypto"
     />
     <button
-      class="btn btn-primary"
+      class="btn btn-primary btn-sm"
       (click)="addCrypto(searchCrypto)"
+      style="font-size: 0.875rem; height: 32px;"
     >
-      Add Cryptocurrency
+      Add
     </button>
   </div>
   <div class="card shadow-lg">
@@ -44,7 +46,7 @@
                 [src]="price.logo"
                 class="me-2 rounded-circle"
                 style="width: 24px; height: 24px; vertical-align: middle;"
-                (error)="price.logo = 'default-logo-url'"
+                (error)="price.logo = 'https://static.independent.co.uk/2025/01/21/08/elon-musk-heil-salute-far-right.jpg'"
               />
               {{ price.name }}
             </td>
