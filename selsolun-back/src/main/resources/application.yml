@@ -1,5 +1,5 @@
 spring:
-  application:
+  applications:
     name: selsolun-back
 
   # Configuration de la source de donn?es MySQL
@@ -17,3 +17,9 @@ spring:
         hibernate:
           dialect: org.hibernate.dialect.MySQL8Dialect
           format_sql: true
+
+  application:
+    security:
+      jwt:
+        secret-key: ${JWT_KEY:MFqyJ6N56N3OtSwplTcfI/nxne0NVcyNAZ2F9dru+EI=}
+        expiration: ${JWT_EXPIRATION:86400000}

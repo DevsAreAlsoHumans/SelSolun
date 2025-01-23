@@ -1,6 +1,10 @@
 package fr.doranco.selsolunback.services;
 
 import fr.doranco.selsolunback.repositories.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,8 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+
 
 @Data
 @RequiredArgsConstructor
@@ -69,7 +75,6 @@ public class JwtService {
                 .getPayload();
     }
 
-    @Override
     public String generateToken(
             UserDetails userDetails
     ) {
@@ -79,7 +84,6 @@ public class JwtService {
         return generateToken(claims, userDetails);
     }
 
-    @Override
     public String generateToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
@@ -87,7 +91,6 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    @Override
     public boolean validateToken(
             String token,
             UserDetails userDetails
@@ -97,21 +100,18 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    @Override
     public String getUsernameFromToken(
             String token
     ) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    @Override
     public Date getExpirationDateFromToken(
             String token
     ) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    @Override
     public boolean isTokenExpired(
             String token
     ) {
