@@ -7,7 +7,8 @@ spring:
 
   # Configuration de la source de données MySQL
   datasource:
-    url: ${DATA_URL:jdbc:mysql://192.168.45.59:3306/crypto_app}
+    # url: ${DATA_URL:jdbc:mysql://192.168.45.59:3306/crypto_app}
+    url: ${DATA_URL:jdbc:mysql://192.168.1.101:3306/crypto_app}
     username: ${DATA_USERNAME:root}
     password: ${DATE_PASSWORD:root_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
