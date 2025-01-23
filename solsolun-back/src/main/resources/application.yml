@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ${APP_NAME:API-Authentication}
+
+  # Configuration de la source de données MySQL
+  datasource:
+    url: ${DATA_URL:jdbc:mysql://192.168.45.59:3306/crypto_app}
+    username: ${DATA_USERNAME:root}
+    password: ${DATE_PASSWORD:root_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Configuration de JPA (Java Persistence API)
+  jpa:
+    hibernate.ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+# JWT Token Configuration
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_KEY:MFqyJ6N56N3OtSwplTcfI/nxne0NVcyNAZ2F9dru+EI=}
+      expiration: ${JWT_EXPIRATION:86400000}

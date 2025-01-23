@@ -1,0 +1,36 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-light rounded shadow">
+  <!-- Section gauche : Titre -->
+  <div class="header-left">
+    <button class="btn btn-link text-uppercase fw-bold text-warning p-0" (click)="navigateTo('home')">
+      IT-Budget
+    </button>
+  </div>
+
+  <!-- Menu de navigation -->
+  <nav class="header-menu d-flex gap-3" *ngIf="isAuthenticated">
+    <button class="btn btn-link text-uppercase fw-bold text-warning p-0" (click)="navigateTo('home')">Accueil</button>
+    <button class="btn btn-link text-uppercase fw-bold text-warning p-0" (click)="navigateTo('dashboard')">Dashboard</button>
+  </nav>
+
+  <!-- Section droite -->
+  <div class="header-right d-flex align-items-center gap-2">
+    <!-- Si connecté -->
+    <div class="profile" *ngIf="isAuthenticated">
+      <button class="btn btn-warning rounded-circle" (click)="toggleProfileMenu()">
+        <i class="bi bi-person"></i>
+      </button>
+
+      <!-- Menu profil -->
+      <div class="dropdown-menu dropdown-menu-end show" *ngIf="profileMenuVisible">
+        <button class="dropdown-item" (click)="navigateTo('profile')">Mon Profil</button>
+        <button class="dropdown-item" (click)="logout()">Se Déconnecter</button>
+      </div>
+    </div>
+
+    <!-- Si non connecté -->
+    <div *ngIf="!isAuthenticated" class="d-flex gap-2">
+      <button class="btn btn-outline-warning text-uppercase fw-bold" (click)="navigateTo('login')">Connexion</button>
+      <button class="btn btn-warning text-uppercase fw-bold" (click)="navigateTo('register')">Inscription</button>
+    </div>
+  </div>
+</header>
