@@ -7,10 +7,12 @@ import {MarketChartData} from '../../models/market-chart.data';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   prices: { name: string; timestamp: number; price: number }[] = [];
+  sortColumn: string = 'price';
+  sortDirection: 'asc' | 'desc' = 'desc';
 
   constructor(private cryptoService: CryptocurrencyService) {}
 
@@ -47,6 +49,20 @@ export class HomeComponent implements OnInit {
           console.error(`Error fetching market chart data for ${cryptoData.name}:`, err);
         }
       });
+    });
+  }
+
+  sortTable(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'desc';
+    }
+
+    this.prices.sort((a, b) => {
+      const modifier = this.sortDirection === 'asc' ? 1 : -1;
+      return modifier * (a.price - b.price);
     });
   }
 }
