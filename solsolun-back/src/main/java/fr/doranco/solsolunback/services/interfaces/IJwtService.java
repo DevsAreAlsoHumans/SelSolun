@@ -13,6 +13,8 @@ public interface IJwtService {
 
     String getUsernameFromToken(String token);
 
+    Double getBalanceFromToken(String token);
+
     Date getExpirationDateFromToken(String token);
 
     boolean isTokenExpired(String token);

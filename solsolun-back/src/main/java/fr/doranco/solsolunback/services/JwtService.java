@@ -1,5 +1,6 @@
 package fr.doranco.solsolunback.services;
 
+import fr.doranco.solsolunback.entities.User;
 import fr.doranco.solsolunback.repositories.UserRepository;
 import fr.doranco.solsolunback.services.interfaces.IJwtService;
 
@@ -81,7 +82,9 @@ public class JwtService implements IJwtService {
             UserDetails userDetails
     ) {
         final Map<String, Object> claims = new HashMap<>();
-        claims.put("Authorities", userDetails.getAuthorities());
+        final User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec email : " + userDetails.getUsername()));
+        claims.put("balance", user.getBalance());
 
         return generateToken(claims, userDetails);
     }
@@ -109,6 +112,13 @@ public class JwtService implements IJwtService {
             String token
     ) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public Double getBalanceFromToken(
+            String token
+    ) {
+        return extractClaim(token, claims -> claims.get("balance", Double.class));
     }
 
     @Override
