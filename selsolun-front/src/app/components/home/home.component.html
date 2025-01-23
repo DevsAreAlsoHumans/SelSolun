@@ -15,21 +15,23 @@
               Price (USD)
               <i class="bi"
                  [ngClass]="{
-                   'bi-arrow-up': sortColumn === 'price' && sortDirection === 'asc',
-                   'bi-arrow-down': sortColumn === 'price' && sortDirection === 'desc'
-                 }"></i>
+                    'bi-arrow-up': sortColumn === 'price' && sortDirection === 'asc',
+                    'bi-arrow-down': sortColumn === 'price' && sortDirection === 'desc'
+                  }"></i>
             </th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let price of prices"
-              [ngClass]="{'table-success': price.price > 1000,'table-danger': price.price < 0.1 ,'table-warning': price.price < 100}">
-            <td><img
-              [src]="price.logo"
-              class="me-2 rounded-circle"
-              style="width: 24px; height: 24px; vertical-align: middle;"
-            />
-              {{ price.name }}</td>
+              [ngClass]="{'table-success': price.price > 1000, 'table-warning': price.price < 100}"
+              (click)="showChart(price.name)">
+            <td>
+              <img
+                [src]="price.logo"
+                class="me-2 rounded-circle"
+                style="width: 24px; height: 24px; vertical-align: middle;" />
+              {{ price.name }}
+            </td>
             <td>{{ price.timestamp | date: 'short' }}</td>
             <td class="text-end text-primary fw-bold">
               {{ price.price | currency:'USD':'symbol':'1.8-10' }}
@@ -37,6 +39,10 @@
           </tr>
           </tbody>
         </table>
+      </div>
+      <!-- Chart.js Canvas -->
+      <div class="mt-4">
+        <canvas id="cryptoChart"></canvas>
       </div>
     </div>
   </div>

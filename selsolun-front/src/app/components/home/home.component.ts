@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CryptocurrencyService } from '../../services/authentication/crypto.service';
-import {MarketChartData} from '../../models/market-chart.data';
+import { MarketChartData } from '../../models/market-chart.data';
+import { Chart } from 'chart.js/auto';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -14,7 +16,7 @@ export class HomeComponent implements OnInit {
     name: string;
     timestamp: number;
     price: number;
-    logo: string
+    logo: string;
   }[] = [];
 
   cryptoLogos: { [key: string]: string } = {
@@ -27,6 +29,8 @@ export class HomeComponent implements OnInit {
 
   sortColumn: string = 'price';
   sortDirection: 'asc' | 'desc' = 'desc';
+  chart: Chart | undefined;
+  historicalPrices: { [key: string]: { timestamp: number; price: number }[] } = {};
 
   constructor(private cryptoService: CryptocurrencyService) {}
 
@@ -49,14 +53,25 @@ export class HomeComponent implements OnInit {
       this.cryptoService.getMarketChart(requestData).subscribe({
         next: (response: any) => {
           if (response.body.prices) {
-            const firstPrice = response.body.prices[0];
+            const priceHistory = response.body.prices.map((entry: number[]) => ({
+              timestamp: entry[0],
+              price: entry[1]
+            }));
+
+            // Store historical data
+            this.historicalPrices[cryptoData.name] = priceHistory;
+
             this.prices.push({
               name: cryptoData.name,
-              timestamp: firstPrice[0],
-              price: firstPrice[1],
-
+              timestamp: priceHistory[0].timestamp,
+              price: priceHistory[0].price,
               logo: this.cryptoLogos[cryptoData.name] || 'default-logo-url'
             });
+
+            // Optionally, display the first chart by default
+            if (!this.chart && cryptoData.name === 'Shiba') {
+              this.updateChart(cryptoData.name, priceHistory);
+            }
           } else {
             console.warn(`No prices available for ${cryptoData.name}`);
           }
@@ -79,6 +94,51 @@ export class HomeComponent implements OnInit {
     this.prices.sort((a, b) => {
       const modifier = this.sortDirection === 'asc' ? 1 : -1;
       return modifier * (a.price - b.price);
+    });
+  }
+
+  showChart(cryptoName: string) {
+    const priceHistory = this.historicalPrices[cryptoName];
+    if (priceHistory) {
+      this.updateChart(cryptoName, priceHistory);
+    } else {
+      console.warn(`No historical data available for ${cryptoName}`);
+    }
+  }
+
+  updateChart(cryptoName: string, priceHistory: { timestamp: number; price: number }[]) {
+    const timestamps = priceHistory.map(entry => new Date(entry.timestamp).toLocaleString());
+    const prices = priceHistory.map(entry => entry.price);
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    this.chart = new Chart('cryptoChart', {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [
+          {
+            label: `${cryptoName} Price`,
+            data: prices,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Time' } },
+          y: { title: { display: true, text: 'Price (USD)' } }
+        }
+      }
     });
   }
 }
