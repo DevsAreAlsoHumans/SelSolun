@@ -4,6 +4,7 @@ import { NgForOf, NgIf } from '@angular/common';
 
 import { LoginData } from '../../models/login-data.interface';
 import { AuthService } from '../../services/authentication/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
   errorMessages: string[] = [];
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   onSubmit(form: NgForm) {
@@ -37,6 +39,7 @@ export class LoginComponent {
           const token = response.headers.get('Authorization') || response.headers.get('authorization');
           if (token) {
             localStorage.setItem('authToken', token);
+            this.router.navigate(['/home']);
           } else {
             console.error('Aucun token trouvé dans les headers.');
           }
