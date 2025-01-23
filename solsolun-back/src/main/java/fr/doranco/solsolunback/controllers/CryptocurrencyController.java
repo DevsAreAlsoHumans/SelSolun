@@ -27,7 +27,7 @@ public class CryptocurrencyController {
     }
 
     @GetMapping("/market-chart")
-    public ResponseEntity<MarketDataResponse> getMarketChart(
+    public ResponseEntity<Object> getMarketChart(
             @RequestBody MarketDataRequest request
     ) {
         return ResponseEntity.status(HttpStatus.OK)

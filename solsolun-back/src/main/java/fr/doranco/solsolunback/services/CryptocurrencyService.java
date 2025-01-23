@@ -83,7 +83,7 @@ public class CryptocurrencyService implements ICryptocurrencyService {
 
     @Override
     @Transactional
-    public MarketDataResponse getMarketChart(MarketDataRequest request) {
+    public Object getMarketChart(MarketDataRequest request) {
         final String apiUrl = String.format(
                 "%s/coins/%s/market_chart?vs_currency=%s&days=%d",
                 API_URL,
@@ -93,7 +93,8 @@ public class CryptocurrencyService implements ICryptocurrencyService {
         );
 
         try {
-            return restTemplate.getForObject(apiUrl, MarketDataResponse.class);
+
+            return restTemplate.getForObject(apiUrl, Object.class);
         } catch (Exception e) {
             System.err.println("Erreur lors de l'appel à l'API CoinGecko : " + e.getMessage());
             throw new RuntimeException("Impossible de récupérer les données de marché pour la crypto " + request.name());

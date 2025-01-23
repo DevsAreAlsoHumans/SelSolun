@@ -38,7 +38,8 @@ export class LoginComponent {
         next: (response) => {
           const token = response.headers.get('Authorization') || response.headers.get('authorization');
           if (token) {
-            localStorage.setItem('authToken', token);
+            const rawToken = token.startsWith('Bearer ') ? token.substring(7) : token;
+            localStorage.setItem('authToken', rawToken);
             this.router.navigate(['/home']);
           } else {
             console.error('Aucun token trouvé dans les headers.');

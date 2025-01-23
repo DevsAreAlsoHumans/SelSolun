@@ -1,2 +1,17 @@
-<p>home works!</p>
-
+<div>
+  <h1>Bitcoin Prices</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Price (USD)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let price of prices">
+      <td>{{ price.timestamp }}</td>
+      <td>{{ price.price | number: '1.2-2' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
