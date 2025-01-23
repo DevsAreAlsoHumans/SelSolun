@@ -11,7 +11,7 @@ import { LoginData } from '../models/login-data.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  private api_url: string = environment.api_url + 'api/auth';
+  private api_url: string = environment.api_url + 'auth';
 
   private authStatus = new BehaviorSubject<boolean>(false);
 
