@@ -33,11 +33,11 @@ export class JwtService {
   getBalance(): Observable<number | null> {
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('authToken'));
 
-    return this.http.get<{balance: number}>(
+    return this.http.get<number>(
       `${this.api_url}/balance`,
       { headers }
     ).pipe(
-      map(response => response.balance),
+      map(response => response),
       catchError(() => of(null))
     );
   }
