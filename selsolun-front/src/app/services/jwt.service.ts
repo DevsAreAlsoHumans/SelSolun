@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class JwtService {
-  private api_url: string = environment.api_url + 'auth';
+  private api_url: string = environment.api_url + 'jwt';
 
   constructor(
     private http: HttpClient
@@ -23,7 +23,10 @@ export class JwtService {
       { headers }
     ).pipe(
       map(response => response),
-      catchError(() => of(false))
+      catchError((err) => {
+        console.error('Erreur lors de la validation du token :', err);
+        return of(false);
+      })
     );
   }
 
