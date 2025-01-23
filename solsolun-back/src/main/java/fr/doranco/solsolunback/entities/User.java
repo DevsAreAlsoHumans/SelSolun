@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private String passwordHash;
 
     @Column(name = "balance", nullable = false)
-    private double balance;
+    private Double balance;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
