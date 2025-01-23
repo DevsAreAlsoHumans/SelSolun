@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-import { RegisterData } from '../../models/register-data.interface';
-import { LoginData } from '../../models/login-data.interface';
+import { environment } from '../../environments/environment';
+import { RegisterData } from '../models/register-data.interface';
+import { LoginData } from '../models/login-data.interface';
+import { JwtService } from './jwt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private api_url: string = environment.api_url + 'api/auth';
+  private api_url: string = environment.api_url + 'auth';
 
   private authStatus = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private jwtService: JwtService
   ) {
-    const authToken = localStorage.getItem('authToken');
-    this.authStatus.next(!!authToken);
+    this.jwtService.validate().subscribe((isValid) => this.authStatus.next(isValid));
   }
 
   register(registerData: RegisterData): Observable<any> {
@@ -48,9 +49,7 @@ export class AuthService {
       }
     ).pipe(
       catchError((error) => {
-        console.error('Erreur lors de la connexion :', error);
-        const errorMessage = error.error?.error_message || 'Une erreur inattendue s’est produite.';
-        return throwError(() => new Error(errorMessage));
+        return throwError(() => new Error(error.error?.error_message || 'Une erreur inattendue s’est produite.'));
       })
     );
   }
@@ -65,9 +64,7 @@ export class AuthService {
   }
 
   logout() {
-    this.authStatus.next(false);
     localStorage.removeItem('authToken');
-
-    console.log(localStorage.getItem('authToken'));
+    this.authStatus.next(false);
   }
 }

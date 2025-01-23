@@ -1,5 +1,6 @@
 package fr.doranco.solsolunback.services;
 
+import fr.doranco.solsolunback.entities.User;
 import fr.doranco.solsolunback.repositories.UserRepository;
 import fr.doranco.solsolunback.services.interfaces.IJwtService;
 
@@ -69,11 +70,15 @@ public class JwtService implements IJwtService {
     private Claims extractAllClaims(
             String token
     ) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException e) {
+            throw new RuntimeException("Token invalide ou expiré");
+        }
     }
 
     @Override
@@ -81,7 +86,9 @@ public class JwtService implements IJwtService {
             UserDetails userDetails
     ) {
         final Map<String, Object> claims = new HashMap<>();
-        claims.put("Authorities", userDetails.getAuthorities());
+        final User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec email : " + userDetails.getUsername()));
+        claims.put("balance", user.getBalance() != null ? user.getBalance() : 0.0);
 
         return generateToken(claims, userDetails);
     }
@@ -101,7 +108,7 @@ public class JwtService implements IJwtService {
     ) {
         final String username = getUsernameFromToken(token);
 
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && isTokenExpired(token));
     }
 
     @Override
@@ -109,6 +116,13 @@ public class JwtService implements IJwtService {
             String token
     ) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    @Override
+    public Double getBalanceFromToken(
+            String token
+    ) {
+        return extractClaim(token, claims -> claims.get("balance", Double.class));
     }
 
     @Override
@@ -122,6 +136,6 @@ public class JwtService implements IJwtService {
     public boolean isTokenExpired(
             String token
     ) {
-        return getExpirationDateFromToken(token).before(new Date());
+        return !getExpirationDateFromToken(token).before(new Date());
     }
 }

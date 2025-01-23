@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../services/authentication/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { JwtService } from '../../services/jwt.service';
 
 @Component({
   selector: 'app-header',
@@ -16,10 +17,12 @@ import { AuthService } from '../../services/authentication/auth.service';
 export class HeaderComponent implements OnInit {
 
   isAuthenticated : boolean = false;
+  balance: number = 0.0;
   profileMenuVisible = false;
 
   constructor(
     protected authService: AuthService,
+    private jwtService: JwtService,
     private router: Router
   ) {}
 
@@ -28,8 +31,10 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = isAuthenticated;
     });
 
-
-    console.log(this.isAuthenticated);
+    this.jwtService.getBalance().subscribe(balance => {
+      if (balance !== null)
+        this.balance = parseFloat(balance.toFixed(4));
+    });
   }
 
   toggleProfileMenu() {

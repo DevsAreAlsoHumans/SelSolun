@@ -3,7 +3,7 @@ import {FormsModule, NgForm} from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 
 import { LoginData } from '../../models/login-data.interface';
-import { AuthService } from '../../services/authentication/auth.service';
+import { AuthService } from '../../services/auth.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -38,7 +38,7 @@ export class LoginComponent {
         next: (response) => {
           const token = response.headers.get('Authorization') || response.headers.get('authorization');
           if (token) {
-            this.authService.loginIn(token);
+            this.authService.loginIn(token.substring(7));
             this.router.navigate(['/home']).then(navigated => {
               if (!navigated) {
                 console.error('La navigation vers /home a échoué.');
