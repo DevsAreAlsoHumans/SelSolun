@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
       { name: 'Ethereum', currency: 'usd', day: 1 },
       { name: 'Tether', currency: 'usd', day: 1 },
       { name: 'Doge', currency: 'usd', day: 1 },
+      { name: 'Shiba', currency: 'usd', day: 1 },
     ];
 
     cryptocurrencies.forEach(cryptoData => {
