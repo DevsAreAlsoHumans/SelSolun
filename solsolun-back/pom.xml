@@ -54,7 +54,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.26</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- JJWT -->
@@ -72,7 +73,7 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.5</version> <!-- or 'jjwt-gson' for Gson -->
+            <version>0.12.5</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -109,6 +110,7 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -120,6 +122,19 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
