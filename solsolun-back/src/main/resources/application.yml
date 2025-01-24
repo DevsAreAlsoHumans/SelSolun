@@ -3,7 +3,7 @@ server:
 
 app:
   security:
-    allowed-origins: http://localhost:4200
+    allowed-origins: http://localhost:4200,http://192.168.1.68:8081/login
 
 spring:
   application:
